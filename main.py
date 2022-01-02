@@ -46,7 +46,7 @@ def check_knight(board, kr, kc, n):
             return True
     return False
 
-def check_rowcolumn(board, kr, kc):
+def check_rowcolumn(board, kr, kc, Queen, Rook):
     #Checks the whole row & column if there is a queen, rook or if a piece is blocking it
     for ro, co in [(1,0), (0,1), (-1,0), (0,-1)]:
         r = kr
@@ -55,13 +55,13 @@ def check_rowcolumn(board, kr, kc):
             r = r+ro
             c = c+co
             piece = get_piece(board, r, c)
-            if piece == "Q" or piece == "R":
+            if piece == Queen or piece == Rook:
                  return True
             if piece != ".":
                 break
     return False
 
-def check_diagonal(board, kr, kc):
+def check_diagonal(board, kr, kc, Queen, Bishop):
     #Checks the whole row & column if there is a queen, bishop or if a piece is blocking it
     for ro, co in [(1,1), (-1,1), (-1,-1), (1,-1)]:
         r = kr
@@ -70,34 +70,7 @@ def check_diagonal(board, kr, kc):
             r = r+ro
             c = c+co
             piece = get_piece(board, r, c)
-            if piece == "Q" or piece == "B":
-                 return True
-            if piece != ".":
-                break
-    return False
-def check_rowcolumnW(board, kr, kc):
-    for ro, co in [(1,0), (0,1), (-1,0), (0,-1)]:
-        r = kr
-        c = kc
-        while r >= 0 and r <=7 and c>=0 and c<=7:
-            r = r+ro
-            c = c+co
-            piece = get_piece(board, r, c)
-            if piece == "q" or piece == "r":
-                 return True
-            if piece != ".":
-                break
-    return False
-
-def check_diagonalW(board, kr, kc):
-    for ro, co in [(1,1), (-1,1), (-1,-1), (1,-1)]:
-        r = kr
-        c = kc
-        while r >= 0 and r <=7 and c>=0 and c<=7:
-            r = r+ro
-            c = c+co
-            piece = get_piece(board, r, c)
-            if piece == "q" or piece == "b":
+            if piece == Queen or piece == Bishop:
                  return True
             if piece != ".":
                 break
@@ -113,18 +86,18 @@ def board_check(board):
         return "Black king is in check"
     if check_knight(board, kr,kc, "N"):
         return "Black king is in check"
-    if check_rowcolumn(board, kr, kc):
+    if check_rowcolumn(board, kr, kc, "Q", "R"):
         return "Black king is in check"
-    if check_diagonal(board, kr, kc):
+    if check_diagonal(board, kr, kc, "Q", "B"):
         return "Black king is in check"
     Kr, Kc = find_piece(board, "K")
     if check_pawn(board, Kr, Kc, "p", -1):
         return "White king is in check"
     if check_knight(board, Kr,Kc, "n"):
         return "White king is in check"
-    if check_rowcolumnW(board, Kr, Kc):
+    if check_rowcolumn(board, kr, kc, "q", "r"):
         return "White king is in check"
-    if check_diagonalW(board, Kr, Kc):
+    if check_diagonal(board, kr, kc, "q", "b"):
         return "White king is in check"
     return "No King is in check"
 
